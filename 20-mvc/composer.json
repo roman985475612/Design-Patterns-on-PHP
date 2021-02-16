@@ -1,0 +1,16 @@
+{
+    "name": "patterns/mvc",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Roman",
+            "email": "roman985475612@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}
