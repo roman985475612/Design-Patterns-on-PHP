@@ -4,11 +4,11 @@ namespace App\System;
 
 class Router
 {
+    private $controller;
+
     private $action;
 
     private $params;
-
-    private $controller;
 
     private $requestUrl = '';
 
@@ -38,7 +38,7 @@ class Router
 
             $key = [];
             $value = [];
-
+    
             for ($i = 2; $i < $count; $i++) {
                 if ($i % 2 == 0) {
                     $key[] = $url[$i];
@@ -46,15 +46,28 @@ class Router
                     $value[] = $url[$i];
                 }
             }
+
+            if (!$this->params = array_combine($key, $value)) {
+                throw new \Exception('Error request');
+            }
         }
 
-        if (!$this->params = array_combine($key, $value)) {
-            throw new \Exception('Error request');
-        }
     }
 
     public function processRequest()
     {
-        print_r($this->params);
+        if (class_exists($this->controller)) {
+            $ref = new \ReflectionClass($this->controller);
+
+            if ($ref->hasMethod($this->action)) {
+                if ($ref->isInstantiable()) {
+                    $class = $ref->newInstance();
+                    $method = $ref->getMethod($this->action);
+                    $method->invoke($class, $this->params);
+                }
+            }
+        } else {
+            throw new \Exception('Page error!');
+        }
     }
 }
